@@ -36,7 +36,10 @@ class FindInFileCommand(sublime_plugin.TextCommand):
 		# Halt if search term is empty.
 		if (len(search_term) == 0):
 			panel.run_command("append", {"characters": "Search term is blank!\n"});
-		
+			# Make the panel read-only.
+			panel.set_read_only(True);
+			return;
+			
 		else:		
 			# Add the matching lines to the output panel.
 			matching_regions = self.view.find_all(search_term, sublime.IGNORECASE);
@@ -46,5 +49,13 @@ class FindInFileCommand(sublime_plugin.TextCommand):
 				(row,col) = self.view.rowcol(region.begin())
 				panel.run_command("append", {"characters": "%04d: %s%s\n" % (row+1, region_text, " " * 200)})		
 
-		# Make the panel read-only.
-		panel.set_read_only(True);
+			# Hilight the matches in the output panel.				
+			matching_regions = panel.find_all(search_term, sublime.IGNORECASE);
+			panel.erase_regions("virtual_space");                                                                                                                       
+			panel.add_regions("virtual_space", list(matching_regions), "comment");                                                                                                                       
+
+			# Make the panel read-only.
+			panel.set_read_only(True);
+			return;
+			
+
