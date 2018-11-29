@@ -1,0 +1,6 @@
+[
+    {
+        "caption": "-",
+    },
+    { "caption": "Find in file", "command": "find_in_file", },
+]
